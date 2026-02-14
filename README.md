@@ -32,14 +32,6 @@ cd FinanFlow
 pip install -r requirements.txt
 ```
 
-3. Configure os secrets (crie o arquivo `.streamlit/secrets.toml`):
-```toml
-[general]
-admin_email = "admin@finanflow.com"
-admin_password = "admin@123"
-db_name = "finanflow.db"
-```
-
 4. Execute a aplicação:
 ```bash
 streamlit run main.py
@@ -73,3 +65,4 @@ Interface totalmente responsiva, otimizada para desktop e mobile.
 ## 📄 Licença
 
 Projeto pessoal - Todos os direitos reservados.
+
