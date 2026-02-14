@@ -32,11 +32,6 @@ cd FinanFlow
 pip install -r requirements.txt
 ```
 
-4. Execute a aplicação:
-```bash
-streamlit run main.py
-```
-
 ## 🌐 Deploy no Streamlit Cloud
 
 A aplicação está configurada para deploy automático no Streamlit Community Cloud.
@@ -45,12 +40,6 @@ A aplicação está configurada para deploy automático no Streamlit Community C
 - Conta no GitHub
 - Conta no Streamlit Cloud (gratuita)
 
-### Passos:
-1. Faça push do código para um repositório GitHub
-2. Acesse [share.streamlit.io](https://share.streamlit.io)
-3. Conecte seu repositório
-4. Configure os secrets no painel do Streamlit Cloud
-5. Deploy automático!
 
 ## 🔐 Segurança
 
@@ -65,4 +54,5 @@ Interface totalmente responsiva, otimizada para desktop e mobile.
 ## 📄 Licença
 
 Projeto pessoal - Todos os direitos reservados.
+
 
