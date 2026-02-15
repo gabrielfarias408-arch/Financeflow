@@ -18,35 +18,41 @@ def verify_password(password, hashed):
 
 def check_login(email, password):
     """Verifies email and password. Returns user dict if successful, None otherwise."""
-    users = db.run_query("SELECT id, email, password_hash, role, status FROM users WHERE email = ?", (email,), return_data=True)
-    
-    if users:
-        user = users[0]
-        # user structure: (id, email, password_hash, role, status)
-        stored_hash = user[2]
+    # First check for regular user in DB
+    try:
+        result = db.run_query("SELECT id, email, password_hash, role, status FROM users WHERE email = %s", (email,), return_data=True)
         
-        if verify_password(password, stored_hash):
-            return {
-                "id": user[0],
-                "email": user[1],
-                "role": user[3],
-                "status": user[4]
-            }
+        if isinstance(result, list) and len(result) > 0:
+            user = result[0]
+            # Check if we have at least the password_hash (index 2)
+            if len(user) >= 3:
+                stored_hash = user[2]
+                if verify_password(password, stored_hash):
+                    return {
+                        "id": user[0],
+                        "email": user[1],
+                        "role": user[3] if len(user) > 3 else 'user',
+                        "status": user[4] if len(user) > 4 else 'active'
+                    }
+        elif isinstance(result, str):
+            st.sidebar.error(f"Erro no Banco: {result}")
+    except Exception as e:
+        st.sidebar.error(f"Erro de processamento: {e}")
     
     # Check for admin (Credentials from secrets)
     try:
         admin_email = st.secrets["general"]["admin_email"]
         admin_pass = st.secrets["general"]["admin_password"]
-    except FileNotFoundError:
-        # Fallback for local dev without secrets.toml (though we just created it)
+    except Exception:
+        # Fallback for local dev without secrets.toml
         admin_email = "admin@finanflow.com" 
         admin_pass = "admin@123"
 
     if email == admin_email and password == admin_pass:
         # Ensure admin exists in DB
-        existing = db.run_query("SELECT * FROM users WHERE email = ?", (email,), return_data=True)
-        if not existing:
-             db.run_query("INSERT INTO users (email, password_hash, role, status) VALUES (?, ?, ?, ?)", 
+        existing = db.run_query("SELECT * FROM users WHERE email = %s", (email,), return_data=True)
+        if not existing or isinstance(existing, str):
+             db.run_query("INSERT INTO users (email, password_hash, role, status) VALUES (%s, %s, %s, %s)", 
                           (email, hash_password(password), 'admin', 'active'))
         return {"id": 0, "email": email, "role": "admin", "status": "active"}
         
@@ -54,12 +60,12 @@ def check_login(email, password):
 
 def register_user(email, password):
     """Registers a new user with 'pending' status."""
-    existing = db.run_query("SELECT * FROM users WHERE email = ?", (email,), return_data=True)
-    if existing:
+    existing = db.run_query("SELECT * FROM users WHERE email = %s", (email,), return_data=True)
+    if existing and not isinstance(existing, str):
         return False, "E-mail já cadastrado."
     
     hashed = hash_password(password)
-    result = db.run_query("INSERT INTO users (email, password_hash, role, status) VALUES (?, ?, ?, ?)", 
+    result = db.run_query("INSERT INTO users (email, password_hash, role, status) VALUES (%s, %s, %s, %s)", 
                           (email, hashed, 'user', 'pending'))
     
     if result is True:
