@@ -19,28 +19,6 @@ Sistema completo de gestão financeira pessoal desenvolvido com Streamlit.
 - SQLite
 - Bcrypt
 
-## 🔧 Instalação Local
-
-1. Clone o repositório:
-```bash
-git clone <seu-repositorio>
-cd FinanFlow
-```
-
-2. Instale as dependências:
-```bash
-pip install -r requirements.txt
-```
-
-## 🌐 Deploy no Streamlit Cloud
-
-A aplicação está configurada para deploy automático no Streamlit Community Cloud.
-
-### Pré-requisitos:
-- Conta no GitHub
-- Conta no Streamlit Cloud (gratuita)
-
-
 ## 🔐 Segurança
 
 - Senhas criptografadas com bcrypt
@@ -54,5 +32,6 @@ Interface totalmente responsiva, otimizada para desktop e mobile.
 ## 📄 Licença
 
 Projeto pessoal - Todos os direitos reservados.
+
 
 
