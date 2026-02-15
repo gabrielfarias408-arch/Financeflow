@@ -1,8 +1,0 @@
-streamlit
-pandas
-plotly
-bcrypt
-streamlit-option-menu
-streamlit-extras
-google-generativeai
-psycopg2-binary
